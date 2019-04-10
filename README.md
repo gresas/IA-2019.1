@@ -1,6 +1,6 @@
-# ES 2
+# IA
 
-Projeto da disciplina de Engenharia de Software 2 da Universidade Federal Fluminense
+Projeto da disciplina de Inteligência Artificial da Universidade Federal Fluminense
 
 ### Instalando o Ambiente
 
