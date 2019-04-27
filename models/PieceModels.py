@@ -1,9 +1,9 @@
 import random
 
 class Peca:
-    def __init__(self, valor, img):
+    def __init__(self, valor):
         self.valor = valor
-        self.img = img
+        # self.img = img
 
 
 class Pecas:
@@ -49,41 +49,41 @@ class Pecas:
 
 
 class PecaCuringa(Peca):
-    cor = 'void'
+    cor = 'curinga'
 
-    def __init__(self, valor, img):
-        super().__init__(valor, img)
+    def __init__(self, valor):
+        super().__init__(valor)
 
 
 class PecaAzul(Peca):
     cor = 'azul'
 
-    def __init__(self, valor, img):
-        super().__init__(valor, img)
+    def __init__(self, valor):
+        super().__init__(valor)
     pass
 
 
 class PecaAmarela(Peca):
     cor = 'amarela'
     
-    def __init__(self, valor, img):
-        super().__init__(valor, img)
+    def __init__(self, valor):
+        super().__init__(valor)
     pass
 
 
 class PecaPreta(Peca):
     cor = 'preta'
     
-    def __init__(self, valor, img):
-        super().__init__(valor, img)
+    def __init__(self, valor):
+        super().__init__(valor)
     pass
 
 
 class PecaVerde(Peca):
     cor = 'verde'
     
-    def __init__(self, valor, img):
-        super().__init__(valor, img)
+    def __init__(self, valor):
+        super().__init__(valor)
     pass
 
 
