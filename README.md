@@ -12,7 +12,7 @@ Ative o ambiente:
 ```source env/bin/activate```
 
 Clone o repositório:
-```git clone https://github.com/DiegoCacau/ES2.git```
+```git clone https://github.com/gresas/IA-2019.1.git```
 
 Entre na pasta:
 ```cd ES2```
