@@ -1,4 +1,12 @@
-- Acrescentar métodos que tornem as classes vivas de acordo 
-    com as regras do jogo(Necessário levantar requisitos)
-- Criar lógica do jogo na mesa
-- Tratar exceções
+
+- Criar tempo limite para cada jogada 
+- Implementar as jogadas de cada jogador
+    - Implementar forma de colocar as peças agrupadas na matriz mesa
+    - Implementar regras de negócio do jogo na matriz mesa
+    - Validar o final da jogada de um jogador
+- Detectar e Tratar exceções
+
+** Extra
+- Criar método para ordenar o suporte do jogador 
+    de acordo com filtros passados por argumento
+    ('por grupo cores diferentes', 'por sequencia da mesma cor')
