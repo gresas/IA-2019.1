@@ -15,7 +15,7 @@ Clone o repositório:
 ```git clone https://github.com/gresas/IA-2019.1.git```
 
 Entre na pasta:
-```cd ES2```
+```cd IA-2019.1```
 
 Instale os prerequisitos:
 ```pip install -r requirements.txt```
