@@ -1,89 +1,45 @@
 import random
 
-class Peca:
-    def __init__(self, valor):
-        self.valor = valor
-        # self.img = img
+class Piece:
+    def __init__(self, left, right):
+        self.left_value = left
+        self.right_value = right  
+
+    def totalValue(self):
+        return self.left_value + self.right_value
 
 
-class Pecas:
+class GroupPieces:
     def __init__(self):
-        self.pecas = list()
+        self.pieces = list()
 
-    def retornaPosicao(self, peca):
-        return self.pecas.index(peca)
+    def getPosition(self, peca):
+        return self.pieces.index(peca)
 
-    def retornaPeca(self, posicao):
-        return self.pecas[posicao]
+    def getPieceFromIndex(self, position):
+        return self.pieces[position]
 
-    def retornaPecas(self):
-        return self.pecas
+    def getGroupPieces(self):
+        return self.pieces
 
-    def adcionaPeca(self, p):
-        self.pecas.append(p)
+    def appendPiece(self, p):
+        self.pieces.append(p)
 
-    def removePeca(self, p):
-        return self.pecas.pop(self.retornaPosicao(p))
+    def popPiece(self, p):
+        return self.pieces.pop(self.getPosition(p))
 
-    def contaPecas(self):
-        return len(self.retornaPecas())
+    def lenGroupPieces(self):
+        return len(self.pieces)
 
-    def removePecaAleatoria(self):
+    def randomChoose(self):
         random.seed()
-        return random.choice(self.pecas)
+        return random.choice(self.pieces)
 
-    def embaralhaPecas(self):
-        random.shuffle(self.pecas)
+    def shuffle(self):
+        random.shuffle(self.pieces)
 
-    def somaValoresPecas(self):
-        return sum(list(map(lambda x: x.valor, self.pecas)))
+    def getSumValue(self):
+        return sum(list(map(lambda x: x.value, self.pieces)))
 
-    def ordenaPecas(self, modo):
-        if(modo == 1):
-            self.pecas = sorted(self.pecas, key=lambda x: (x.cor, x.valor))
-        if(modo == 2):
-            self.pecas = sorted(self.pecas, key=lambda x: x.valor)
-
-    def esvaziar(self):
-        self.pecas.clear()
-
-
-class PecaCuringa(Peca):
-    cor = 'curinga'
-
-    def __init__(self, valor):
-        super().__init__(valor)
-
-
-class PecaAzul(Peca):
-    cor = 'azul'
-
-    def __init__(self, valor):
-        super().__init__(valor)
-    pass
-
-
-class PecaAmarela(Peca):
-    cor = 'amarela'
-    
-    def __init__(self, valor):
-        super().__init__(valor)
-    pass
-
-
-class PecaPreta(Peca):
-    cor = 'preta'
-    
-    def __init__(self, valor):
-        super().__init__(valor)
-    pass
-
-
-class PecaVerde(Peca):
-    cor = 'verde'
-    
-    def __init__(self, valor):
-        super().__init__(valor)
-    pass
-
-
+    def clear(self):
+        self.pieces.clear()

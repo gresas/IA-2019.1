@@ -16,67 +16,50 @@ def init_game():
         sys.exit(1)
 
     # Setando os nomes dos players
-    jogadores = Jogadores()
+    players = Players()
     for i in range(numPlayers):
-        nome = str(input('Nome do jogador %s: '%(i+1)))
-        jogadores.adcionaJogador(Jogador(nome))
+        name = str(input('Nome do jogador %s: '%(i+1)))
+        players.appendPlayer(Player(name))
 
-    numPecas = 13
-    # Preenchendo monte com 106 peças
-    monte = Monte()
-    pecas = Pecas()
-    for j in range(2):
-        for i in range(numPecas):
-            p = PecaAmarela((i+1))
-            pecas.adcionaPeca(p)
-    for j in range(2):
-        for i in range(numPecas):
-            p = PecaVerde((i+1))
-            pecas.adcionaPeca(p)
-    for j in range(2):
-        for i in range(numPecas):
-            p = PecaAzul((i+1))
-            pecas.adcionaPeca(p)
-    for j in range(2):
-        for i in range(numPecas):
-            p = PecaPreta((i+1))
-            pecas.adcionaPeca(p)
+    num_pieces = 7
+    # Preenchendo monte com 28 peças
+    heap = Heap()
+    pieces = GroupPieces()
     
-    # Setando os coringas
-    coringa1 = PecaCuringa(0)
-    coringa2 = PecaCuringa(0)
-    pecas.adcionaPeca(coringa1)
-    pecas.adcionaPeca(coringa2)
+    #for k in range(4):
+    for i in range(num_pieces):
+        for j in range(i, num_pieces):
+            p = Piece(i, j)
+            pieces.appendPiece(p)
 
-    monte.atribuiPecasMonte(pecas)
+    heap.setHeap(pieces)
 
     # Teste para listar dados no monte
-    print('Numero de peças no monte: %s'%monte.contaPecasMonte())
-    monte.embaralhaMonte()
-    print(list(map(lambda x: (x.cor, x.valor), monte.retornaMonte())))
+    print('Numero de peças no monte: %s'%heap.len())
+    heap.shuffleHeap()
+    print(list(map(lambda x: (x.left_value, x.right_value), heap.getHeap().getGroupPieces())))
     print()
 
     # Distribuindo pecas para jogadores(falta a rodada de decisão da
     #  ordem de jogada)
-    numPecas = 14
+    num_pieces = 7
     print()
-    for jogador in jogadores.retornaJogadores():
-
-        for i in range(numPecas):
-            jogador.compraPecaMonte(monte)
-        print('Jogador: %s'%jogador.apelido)
-        jogador.ordenaSuporte(2)
-        print(list(map(lambda x: (x.cor, x.valor), jogador.mostraSuporte())))
+    for p in players.getPlayers():
+        for i in range(num_pieces):
+            p.buy(heap)
+        print('Jogador: %s'%p.getName())
+        #p.sortHand()
+        print(list(map(lambda x: (x.left_value, x.right_value), p.getPlayerHand().getHand().getGroupPieces())))
         print()
 
     # Teste para listar dados no monte
     print()
-    print('Numero de peças no monte após distribuir as peças: %s'%monte.contaPecasMonte())
-    monte.embaralhaMonte()
-    print(list(map(lambda x: (x.cor, x.valor), monte.retornaMonte())))
+    print('Numero de peças no monte após distribuir as peças: %s'%heap.len())
+    heap.shuffleHeap()
+    print(list(map(lambda x: (x.left_value, x.right_value), heap.getHeap().getGroupPieces())))
 
-    mesa = Mesa(jogadores, monte)
-    return mesa
+    table = Table(players, heap)
+    return table 
 
     # --------------------------------------------------------------------------------
 
@@ -86,7 +69,7 @@ class Game():
         self.width = 300
         self.height = 280
         self.running = False
-        self.mesa = init_game()
+        self.table = init_game()
 
     def run(self):
         pygame.init()
@@ -101,7 +84,7 @@ class Game():
 
         # Display some text
         font = pygame.font.Font(None, 36)
-        text = font.render("Rummikub", 1, (10, 10, 10))
+        text = font.render("Domino", 1, (10, 10, 10))
         textpos = text.get_rect()
         textpos.centerx = background.get_rect().centerx
         background.blit(text, textpos)
@@ -114,12 +97,14 @@ class Game():
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     self.running = False
+            ''' 
                 # Detecta mouse click
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     print(event.button)
             #self.mesa.turno()
             screen.blit(background, (0, 0))
             pygame.display.flip()
+            '''
 
 if __name__ == "__main__":
     game = Game()

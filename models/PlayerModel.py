@@ -1,37 +1,36 @@
-from .GameModels import *
+import GameModels as gm
 
-class Jogador:
-    pontuacao = 0
+class Player:
+    score = 0
 
-    def __init__(self, apelido):
-        self.apelido = apelido
-        self.suporte = Suporte()
+    def __init__(self, nickname):
+        self.nick = nickname
+        self.hand = gm.HandSupport()
+    
+    def getName(self):
+        return self.nick
 
-    def mostraSuporte(self):
-        return self.suporte.retornaSuporte()
+    def getPlayerHand(self):
+        return self.hand
 
-    def atribuiSuporte(self, pecasSuporte):
-        self.suporte = pecasSuporte
+    def setPlayerHand(self, pieces):
+        self.hand.setHand(pieces)
 
-    def atribuiPontuacao(self, valor):
-        self.pontuacao = valor
+    def setScore(self, value):
+        self.score = value
 
-    def compraPecaMonte(self, monte):
-        self.suporte.compraPeca(monte)
-        
-    def somaValoresSuporte(self):
-        return self.suporte.somaValoresSuporte()
+    def buy(self, heap):
+        p = heap.getHeap().randomChoose()
+        heap.getHeap().popPiece(p)
+        self.hand.getHand().appendPiece(p)
 
-    # Modo: 1 => Sequencia de cores iguais
-    #       2 => Grupos de cores diferentes
-    def ordenaSuporte(self, modo):
-        if(modo == 1 or modo == 2):
-            self.suporte.ordenaPecas(modo)
+    def sortHand(self):
+        self.hand.getHand().getGroupPieces().sort()
 
     def tempoDeRodada(self, matriz, monte):
         op = str(input("1 - Comprar peça e pular a vez\n2 - Realizar Jogada"))
         if(op == "1"):
-            self.compraPecaMonte(monte)
+            self.buy(monte)
         else:
             pass
             #  Aqui que o jogador faz suas jogadas
@@ -41,28 +40,28 @@ class Jogador:
         return True
 
 
-class Jogadores:
+class Players:
 
     def __init__(self):
-        self.jogadores = list()
+        self.players = list()
 
-    def retornaJogadores(self):
-        return self.jogadores
+    def getPlayers(self):
+        return self.players
 
-    def retornaPosicao(self, jogador):
-        return self.jogadores.index(jogador)
+    def getPlayerPosition(self, player):
+        return self.players.index(player)
 
-    def retornaJogador(self, posicao):
-        return self.jogadores[posicao]
+    def getPlayerFromIndex(self, position):
+        return self.players[position]
 
-    def adcionaJogador(self, jogador):
-        self.jogadores.append(jogador)
+    def appendPlayer(self, player):
+        self.players.append(player)
 
-    def removeJogador(self, jogador):
-        return self.jogadores.pop(self.retornaPosicao(jogador))
+    def popPlayer(self, player):
+        return self.players.pop(self.getPlayerPosition(player))
 
-    def adcionaJogadorPosicao(self, posicao, jogador):
-        return self.jogadores.insert(posicao, jogador)
+    def insertPlayer(self, position, player):
+        return self.players.insert(position, player)
 
-    def moveJogadorProFinal(self, jogador):
-        self.adcionaJogadorPosicao(len(self.retornaJogadores()) - 1, self.removeJogador(jogador))
+    def turnToNextPlayer(self, player):
+        self.insertPlayer(len(self.players) - 1, self.popPlayer(player))

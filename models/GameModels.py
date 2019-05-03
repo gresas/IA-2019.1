@@ -1,64 +1,52 @@
-from .PieceModels  import *
+import PieceModels as pm
 
-class Monte:
-
-    def __init__(self):
-        # no inicio, o monte contém todas as peças do jogo
-        self.montePecas = Pecas()
-
-    def embaralhaMonte(self):
-        self.montePecas.embaralhaPecas()
-
-    def atribuiPecasMonte(self, pecas):
-        self.montePecas = pecas
-
-    def contaPecasMonte(self):
-        return self.montePecas.contaPecas()
-
-    def removePecaAleatoria(self):
-        p = self.montePecas.removePecaAleatoria()
-        return self.montePecas.removePeca(p)
-
-    def retornaMonte(self):
-        return self.montePecas.retornaPecas()
-
-
-class Suporte:
+class Heap:
 
     def __init__(self):
-        self.listaPecas = Pecas()
+        self.heap_list = pm.GroupPieces()
 
-    def compraPeca(self, monte):
-        p = monte.removePecaAleatoria()
-        self.listaPecas.adcionaPeca(p)
+    def getHeap(self):
+        return self.heap_list
 
-    def atribuiPecasSuporte(self, pecas):
-        self.listaPecas = pecas
+    def setHeap(self, pieces):
+        self.heap_list = pieces
 
-    def removePeca(self, p):
-        return self.listaPecas.removePeca(p)
+    def shuffleHeap(self):
+        self.heap_list.shuffle()
 
-    def contaPecasSuporte(self):
-        return self.listaPecas.contaPecas()
+    def len(self):
+        return self.heap_list.lenGroupPieces()
 
-    def retornaSuporte(self):
-        return self.listaPecas.retornaPecas()
 
-    def somaValoresSuporte(self):
-        return self.listaPecas.somaValoresPecas()
+class HandSupport:
 
-    # Need to implement
-    def ordenaPecas(self, modo):
-        self.listaPecas.ordenaPecas(modo)
+    def __init__(self):
+        self.piece_list = pm.GroupPieces()
+
+    def setHand(self, pieces):
+        self.piece_list = pieces
+
+    def getHand(self):
+        return self.piece_list
+
+    def pop(self, p):
+        return self.piece_list.popPiece(p)
+
+    def len(self):
+        return self.piece_list.lenGroupPieces()
+
+    def sumValue(self):
+        return self.piece_list.getSumValue()
 
         
-class Mesa:
-    turnos = 0
-    len_mesa_matriz = 11
+class Table:
+    turn = 0
+    len_table_matrix = 11
 
-    def __init__(self, jogadores, monte):
-        self.jogadores = jogadores
-        self.monte = monte
+    def __init__(self, players, heap):
+        self.players = players
+        self.heap = heap
+        '''
         self.matriz = MatrizMesa(self.len_mesa_matriz) 
     
     def turno(self):
@@ -86,3 +74,5 @@ class MatrizMesa:
     def verificaJogada():
         # Aqui onde é feita a verificação da jogada
         return True
+
+'''
