@@ -1,4 +1,5 @@
 import PieceModels as pm
+import ..utils.util as u
 
 class Heap:
 
@@ -38,14 +39,40 @@ class HandSupport:
     def sumValue(self):
         return self.piece_list.getSumValue()
 
+    def maxValue(self):
+        return self.piece_list.getMaxValue()
+
         
 class Table:
-    turn = 0
-    len_table_matrix = 11
+    self.heap = None
+    self.player_list = None
+    self.num_pieces_per_player = 7
 
-    def __init__(self, players, heap):
-        self.players = players
-        self.heap = heap
+    def buildTable(self, players):
+        self.player_list = Players()
+        self.player_list.players = players
+        
+        self.heap = Heap()
+        initGameBuild(self.player_list, self.heap)
+
+    def initGameBuild(self, players, heap):
+        pieces = GroupPieces()
+    
+        for i in range(num_pieces_per_player):
+            for j in range(i, num_pieces_per_player):
+                p = Piece(i, j)
+                pieces.appendPiece(p)
+        heap.setHeap(pieces)
+        for p in players.getPlayers():
+            for i in range(num_pieces_per_player):
+                p.buy(heap)
+
+    
+    
+
+
+
+
         '''
         self.matriz = MatrizMesa(self.len_mesa_matriz) 
     

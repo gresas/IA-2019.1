@@ -1,8 +1,10 @@
 import pygame
+import ..utils.util as u
 from pygame.locals import *
 from models.GameModels import *
 from models.PieceModels import *
 from models.PlayerModel import *
+from models.GameConfigs import *
 import sys
 
 def init_game():
@@ -65,11 +67,11 @@ def init_game():
 
 class Game():
     """docstring for ClassName"""
-    def __init__(self):
+    def __init__(self, builded_game):
         self.width = 300
         self.height = 280
         self.running = False
-        self.table = init_game()
+        self.game_play = builded_game
 
     def run(self):
         pygame.init()
@@ -96,16 +98,16 @@ class Game():
         while (self.running):
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
-                    self.running = False
-            ''' 
+                    self.running = False 
                 # Detecta mouse click
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     print(event.button)
-            #self.mesa.turno()
+                    # self.game_play.playTurn()
+            
             screen.blit(background, (0, 0))
             pygame.display.flip()
-            '''
+            
 
-if __name__ == "__main__":
-    game = Game()
+if __name__ == "__main_":
+    game = Game(GamePlay.buildGame(u.parseArguments(sys)))
     game.run()

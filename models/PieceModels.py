@@ -7,7 +7,7 @@ class Piece:
 
     def totalValue(self):
         return self.left_value + self.right_value
-
+        
 
 class GroupPieces:
     def __init__(self):
@@ -21,6 +21,9 @@ class GroupPieces:
 
     def getGroupPieces(self):
         return self.pieces
+
+    def getMaxValue(self):
+        return max([p.totalValue() for p in self.pieces])
 
     def appendPiece(self, p):
         self.pieces.append(p)

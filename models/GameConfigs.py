@@ -1,35 +1,24 @@
-from .GameModels import Jogador
+import GameModels as gm
+import PlayerModel as pm
 
-class Tela:
-    # GameState??
-    gameState = 'Something' 
-
-    def __init__(self, width, height):
-        self.width = width
-        self.height = height
-
-
-class TelaDoMenu(Tela):
-
+class Round:
     def __init__(self):
-        self.background = bckgrnd
-        super().__init__(w, h)
+        self.table = gm.Table()
+        self.table_states = None
 
-    # To be continued..
+    def play(self):
+        pass
 
-class TelaDaPartida(Tela):
-    
-    def __init__(self, w, h, bckgrnd):
-        self.background = bckgrnd
-        super().__init__(w, h)
+class GamePlay:
+    MAX_UNDO = 3
 
-    # To be continued..
+    def buildGame(self, players, score):
+        self.actual_round = Round()
+        self.roof_score = score
+        self.round_list = list()
+        self.actual_round.table.buildTable(players)
+        return self
 
+    def playTurn(self):
+        self.actual_round.play()
 
-class TelaDaPontuacao(Tela):
-
-    def __init__(self):
-        self.background = bckgrnd
-        super().__init__(w, h)
-
-    # To be continued..

@@ -13,6 +13,9 @@ class Player:
     def getPlayerHand(self):
         return self.hand
 
+    def greaterPieceValue(self):
+        return self.hand.maxValue()
+
     def setPlayerHand(self, pieces):
         self.hand.setHand(pieces)
 
@@ -64,4 +67,4 @@ class Players:
         return self.players.insert(position, player)
 
     def turnToNextPlayer(self, player):
-        self.insertPlayer(len(self.players) - 1, self.popPlayer(player))
+        self.insertPlayer(len(self.players) - 1, self.popPlayer(self.player[0]))
