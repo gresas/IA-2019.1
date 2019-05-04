@@ -1,0 +1,23 @@
+História:
+
+
+* O objetivo do jogo é acabar com todas as peças da mão, com o menor número de movimentos possíveis, buscando sempre em cada rodada, a maior pontuação na mão dos adversários.
+	
+	
+	- As peças no jogo são representadas por "pedras" divididas em dois espaços iguais, em que cada espaço contém a representação de um número de 0 a 6;
+	- Para ter inicio ao jogo, é preciso de 2 a 4 jogadores(sendo possível jogar em duplas), 28 peças embaralhadas e um score da partida que define o valor(100, 150 ou 200) à ser alcançado para a vitória; 
+	- No ínicio do jogo, é iniciada uma rodada onde cada jogador recebe 7 peças do total de 28. As peças que sobrarem, formarão o monte que será usado para a compra de peças de cada turno;
+	- Cada Jogo tem andamento por rodadas. Para cada rodada, o jogador intercala a vez de jogar(turnos), com o resto dos jogadores;
+		- O jogo começa pelo jogador que tenha a pedra dobrada mais alta (se jogam 4 pessoas, sempre começará quem tem o seis dôbre ou carrilhão);
+	- Em uma jogada, o jogador deve conter na mão uma possível combinação válida de Peça x Peça(s) da mesa;
+		- Cada jogador, no seu turno, deve colocar uma das suas pedras em uma das 2 extremidades abertas, de forma que os pontos de um dos lados coincida com os pontos da extremidade onde está sendo colocada;
+		- Quando o jogador coloca sua pedra sobre a mesa, seu turno se acaba e passa-se ao seguinte jogador;
+	- Em cada turno, o jogador tem um tempo limite para realizar uma jogada;
+	- Se um jogador não puder jogar ou acabar o tempo limite, deverá “comprar” do monte tantas pedras como forem necessárias. Se não houver pedras no monte, passará o turno ao seguinte jogador; 	
+	- Existem casos onde nenhum dos jogadores pode continuar a partida. Isto ocorre quando o número das extremidades saiu 7 vezes antes. Nesse momento se diz que a partida está fechada;
+		- Os jogadores contarão os pontos das pedras que ficaram; o jogador ou dupla com menos pontos vencem e somam-se os pontos da maneira habitual;
+	- Pode acontecer de você ter os mesmos pontos que o jogador ou a dupla que tem a vantagem, nesse caso, ganha este jogador;
+	- A rodada acaba quando algum jogador da mesa consegue esvaziar a mão;
+	- A cada fim de rodada, o vencedor ganha uma pontuação igual à soma dos valores das peças na mão de cada adversário;
+		- Nas rodadas seguintes, o jogador que começa o jogo é o seguinte da vez. Este pode começar o jogo com a pedra que quiser mesmo que não seja uma dobrada. 
+	- O primeiro jogador que alcançar o score da partida, vence.
