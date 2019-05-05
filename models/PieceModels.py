@@ -1,12 +1,28 @@
 import random
+from .utils import util as u
 
 class Piece:
     def __init__(self, left, right):
         self.left_value = left
         self.right_value = right  
 
+    def isFoldedPiece(self):
+        return (self.left_value == self.right_value)
+
     def totalValue(self):
         return self.left_value + self.right_value
+
+    def isCorrect(self, table_pieces):
+        if(not table_pieces):
+            return True
+        first_left, last_right = u.parseGameTable(table_pieces)
+        if((self.left_value == first_left) or (self.right_value == first_left) \
+        or (self.left_value == last_right) or (self.right_value == last_right)):
+            return True                
+        return False    
+
+    def printPiece(self):
+        print('|%s|%s| '%(self.left_value, self.right_value))
         
 
 class GroupPieces:
@@ -18,6 +34,9 @@ class GroupPieces:
 
     def getPieceFromIndex(self, position):
         return self.pieces[position]
+
+    def getSumValue(self):
+        return sum(list(map(lambda x: x.value, self.pieces)))
 
     def getGroupPieces(self):
         return self.pieces
@@ -31,6 +50,9 @@ class GroupPieces:
     def popPiece(self, p):
         return self.pieces.pop(self.getPosition(p))
 
+    def popIndexPiece(self, pos):
+        return self.pieces.pop(pos)
+
     def lenGroupPieces(self):
         return len(self.pieces)
 
@@ -41,8 +63,20 @@ class GroupPieces:
     def shuffle(self):
         random.shuffle(self.pieces)
 
-    def getSumValue(self):
-        return sum(list(map(lambda x: x.value, self.pieces)))
+    def printPieces(self):
+        [u.fancyPrintPiece(p, (p == self.pieces[len(self.pieces)-1])) for p in self.pieces]
+
+    def followTheRules(self, table_pieces):
+        if(not table_pieces):
+            return True
+        first_left, last_right = u.parseGameTable(table_pieces)
+        # print('\n',(first_left, last_right))
+        for this_p in self.pieces:
+            this_p.printPiece()
+            if((this_p.left_value == first_left) or (this_p.right_value == first_left) \
+            or (this_p.left_value == last_right) or (this_p.right_value == last_right)):
+                return True
+        return False
 
     def clear(self):
         self.pieces.clear()

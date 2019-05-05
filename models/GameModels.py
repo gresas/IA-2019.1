@@ -1,5 +1,6 @@
-import PieceModels as pm
-import ..utils.util as u
+from . import PieceModels as pm
+from . import PlayerModel as pp
+from .utils import util as u
 
 class Heap:
 
@@ -44,62 +45,62 @@ class HandSupport:
 
         
 class Table:
-    self.heap = None
-    self.player_list = None
-    self.num_pieces_per_player = 7
+    heap = None
+    player_list = None
+    num_pieces_per_player = 7
+    game_table = None
 
     def buildTable(self, players):
-        self.player_list = Players()
+        self.player_list = pp.Players()
         self.player_list.players = players
-        
         self.heap = Heap()
-        initGameBuild(self.player_list, self.heap)
+        self.game_table = list()
+        self.initGameBuild(self.player_list, self.heap)
 
     def initGameBuild(self, players, heap):
-        pieces = GroupPieces()
-    
-        for i in range(num_pieces_per_player):
-            for j in range(i, num_pieces_per_player):
-                p = Piece(i, j)
+        pieces = pm.GroupPieces()
+        for i in range(self.num_pieces_per_player):
+            for j in range(i, self.num_pieces_per_player):
+                p = pm.Piece(i, j)
                 pieces.appendPiece(p)
         heap.setHeap(pieces)
         for p in players.getPlayers():
-            for i in range(num_pieces_per_player):
+            for i in range(self.num_pieces_per_player):
                 p.buy(heap)
 
-    
-    
+    def turn(self, player):
+        #print('JOGADOR %s'%player.nick)
+        #player.printHand()
+        if(player.isValidHand(self.game_table)):
+            pop_piece = None
+            print("Game Table:")
+            self.printGameTable()
+            while(not pop_piece):
+                piece_position = u.turnMenu(player)
+                pop_piece = player.checkPlay(self.game_table, piece_position)
+                if(pop_piece): break
+                print('Jogada inválida, tente novamente...')
+            self.insertTable(pop_piece)
+        else:
+            print('Não há jogadas possiveis, comprando uma peça...')
+            print('Peça adquirida: |%s|%s|\n\n'%player.buy(self.heap))
+            self.turn(player)
+        
+    def printGameTable(self):
+        [print('|%s|%s|'%(t)) for t in self.game_table]
+        print('\n')
 
-
-
-
-        '''
-        self.matriz = MatrizMesa(self.len_mesa_matriz) 
-    
-    def turno(self):
-        matriz_bkp = self.matriz
-        monte_bkp = self.monte
-        self.jogadores.retornaJogador(0).tempoDeRodada(self.matriz, self.monte)
-        if(self.matriz != matriz_bkp):
-            if(self.matriz.verificaJogada()):
-                self.jogadores.moveJogadorProFinal(self.jogadores.retornaJogador(0))
-                return
-            else:
-                print('Sua jogada foi inválida, retornando jogo ao estado anterior...')
-                self.matriz = matriz_bkp
-        if(monte_bkp == self.monte):
-            self.monte = self.jogadores.retornaJogador(0).compraPecaMonte(self.monte)
-        self.jogadores.moveJogadorProFinal(self.jogadores.retornaJogador(0))
-        # Fim do turno
-        self.turnos += 1
-    
-
-class MatrizMesa:
-    def __init__(self, len_mesa_matriz):
-        self.matriz_mesa = [[-1 for i in range(len_mesa_matriz)] for k in range(len_mesa_matriz)]
-
-    def verificaJogada():
-        # Aqui onde é feita a verificação da jogada
-        return True
-
-'''
+    def insertTable(self, piece):
+        if(not self.game_table):
+            self.game_table.insert(0, (piece.left_value, piece.right_value))
+        else:
+            first, last = u.parseGameTable(self.game_table)
+            if(piece.left_value == first):
+                self.game_table.insert(0, (piece.right_value, piece.left_value))
+            elif(piece.left_value == last):
+                self.game_table.insert(0, (piece.left_value, piece.right_value))
+            elif(piece.right_value == first):
+                self.game_table.insert(len(self.game_table), (piece.left_value, piece.right_value))
+            elif(piece.right_value == last):
+                self.game_table.insert(len(self.game_table), (piece.right_value, piece.left_value))
+        

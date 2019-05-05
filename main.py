@@ -1,5 +1,5 @@
 import pygame
-import ..utils.util as u
+from models.utils.util import parseArguments
 from pygame.locals import *
 from models.GameModels import *
 from models.PieceModels import *
@@ -24,7 +24,7 @@ def init_game():
         players.appendPlayer(Player(name))
 
     num_pieces = 7
-    # Preenchendo monte com 28 peças
+    # Preenchendo monte com 28 pecas
     heap = Heap()
     pieces = GroupPieces()
     
@@ -67,11 +67,11 @@ def init_game():
 
 class Game():
     """docstring for ClassName"""
-    def __init__(self, builded_game):
+    def __init__(self):
         self.width = 300
         self.height = 280
         self.running = False
-        self.game_play = builded_game
+        self.game_play = None
 
     def run(self):
         pygame.init()
@@ -101,13 +101,17 @@ class Game():
                     self.running = False 
                 # Detecta mouse click
                 if event.type == pygame.MOUSEBUTTONDOWN:
-                    print(event.button)
-                    # self.game_play.playTurn()
+                    #print(event.button)
+                    self.game_play.playRoundTurn()
             
             screen.blit(background, (0, 0))
             pygame.display.flip()
             
 
-if __name__ == "__main_":
-    game = Game(GamePlay.buildGame(u.parseArguments(sys)))
+if __name__ == "__main__":
+    game = Game()
+    gp = GamePlay()
+    pl, score = parseArguments(sys)
+    game.game_play = gp.buildGame(pl, score)
     game.run()
+

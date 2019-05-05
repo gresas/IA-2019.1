@@ -1,4 +1,4 @@
-import GameModels as gm
+from . import GameModels as gm
 
 class Player:
     score = 0
@@ -26,18 +26,23 @@ class Player:
         p = heap.getHeap().randomChoose()
         heap.getHeap().popPiece(p)
         self.hand.getHand().appendPiece(p)
+        return (p.left_value, p.right_value)
+
+    def checkPlay(self, game_table, position):
+        p = self.hand.getHand().getPieceFromIndex(position)
+        if(p.isCorrect(game_table)):
+            return self.hand.getHand().popIndexPiece(position)
+        return False
+
+    def isValidHand(self, table_tuple):
+        return self.hand.getHand().followTheRules(table_tuple)
 
     def sortHand(self):
         self.hand.getHand().getGroupPieces().sort()
 
-    def tempoDeRodada(self, matriz, monte):
-        op = str(input("1 - Comprar peça e pular a vez\n2 - Realizar Jogada"))
-        if(op == "1"):
-            self.buy(monte)
-        else:
-            pass
-            #  Aqui que o jogador faz suas jogadas
-        
+    def printHand(self):
+        self.hand.getHand().printPieces()
+
     # Need to implement
     def calculaPontuacao(self):
         return True
@@ -67,4 +72,4 @@ class Players:
         return self.players.insert(position, player)
 
     def turnToNextPlayer(self, player):
-        self.insertPlayer(len(self.players) - 1, self.popPlayer(self.player[0]))
+        self.insertPlayer(len(self.players) - 1, self.popPlayer(self.players[0]))
