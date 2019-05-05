@@ -26,16 +26,12 @@ def turnMenu(player):
     opt = int(input("\nEntre com a posicao da peca a ser jogada:\n"))
     return opt
 
-def fancyPrintPiece(piece, last_piece):
-    left, right = (piece.left_value, piece.right_value) 
-    if(left == 0):
-        left = "-"
-    if(right == 0):
-        right = "-"
-    if(last_piece):
-        print('|%s|%s|'%(piece.left_value, piece.right_value))
-    else:
-        print('|%s|%s| '%(piece.left_value, piece.right_value))
+def isTieGame(tuple_list):
+    value = tuple_list[0]
+    for t in tuple_list:
+        if(t[0] != value):
+            return False
+    return True
 
 def parseGameTable(table_tuple):
     if(table_tuple):
