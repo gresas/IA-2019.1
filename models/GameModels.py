@@ -68,27 +68,34 @@ class Table:
             for i in range(self.num_pieces_per_player):
                 p.buy(heap)
 
-    def turn(self, player):
-        #print('JOGADOR %s'%player.nick)
-        #player.printHand()
+    def turn(self, player, round_n):
         if(player.isValidHand(self.game_table)):
             pop_piece = None
-            print("Game Table:")
-            self.printGameTable()
+            if(self.game_table):
+                print("Game Table:")
+                self.printGameTable()
+            else:
+                print('Round %s\n'%round_n)
+            
             while(not pop_piece):
                 piece_position = u.turnMenu(player)
                 pop_piece = player.checkPlay(self.game_table, piece_position)
                 if(pop_piece): break
-                print('Jogada inválida, tente novamente...')
+                print('\nJogada inválida, tente novamente...\n')
             self.insertTable(pop_piece)
         else:
-            print('Não há jogadas possiveis, comprando uma peça...')
-            print('Peça adquirida: |%s|%s|\n\n'%player.buy(self.heap))
-            self.turn(player)
-        
+            print('Não há jogadas possiveis, comprando uma peça... ',player.nick)
+            p_buy = player.buy(self.heap)
+            if(not p_buy):
+                print('Peças indisponiveis.. passando a vez')
+                return False
+            print('Peça adquirida: |%s|%s|\n\n'%p_buy)
+            self.turn(player, round_n)
+        return True
+
     def printGameTable(self):
-        [print('|%s|%s|'%(t)) for t in self.game_table]
-        print('\n')
+        print_obj = [': |%s|%s| :'%(t) for t in self.game_table]
+        print("".join(print_obj)+'\n')
 
     def insertTable(self, piece):
         if(not self.game_table):
@@ -97,10 +104,15 @@ class Table:
             first, last = u.parseGameTable(self.game_table)
             if(piece.left_value == first):
                 self.game_table.insert(0, (piece.right_value, piece.left_value))
-            elif(piece.left_value == last):
-                self.game_table.insert(0, (piece.left_value, piece.right_value))
             elif(piece.right_value == first):
+                self.game_table.insert(0, (piece.left_value, piece.right_value))
+            elif(piece.left_value == last):
                 self.game_table.insert(len(self.game_table), (piece.left_value, piece.right_value))
             elif(piece.right_value == last):
                 self.game_table.insert(len(self.game_table), (piece.right_value, piece.left_value))
         
+    def clearTable(self):
+        self.heap = Heap()
+        self.game_table = list()
+        map(lambda p: p.clearHand(), self.player_list.getPlayers())
+        self.initGameBuild(self.player_list, self.heap)

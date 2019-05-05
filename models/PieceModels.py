@@ -5,12 +5,10 @@ class Piece:
     def __init__(self, left, right):
         self.left_value = left
         self.right_value = right  
+        self.value = left + right
 
     def isFoldedPiece(self):
         return (self.left_value == self.right_value)
-
-    def totalValue(self):
-        return self.left_value + self.right_value
 
     def isCorrect(self, table_pieces):
         if(not table_pieces):
@@ -20,6 +18,9 @@ class Piece:
         or (self.left_value == last_right) or (self.right_value == last_right)):
             return True                
         return False    
+
+    def getString(self):
+        return '|%s|%s|'%(self.left_value, self.right_value)
 
     def printPiece(self):
         print('|%s|%s| '%(self.left_value, self.right_value))
@@ -64,15 +65,17 @@ class GroupPieces:
         random.shuffle(self.pieces)
 
     def printPieces(self):
-        [u.fancyPrintPiece(p, (p == self.pieces[len(self.pieces)-1])) for p in self.pieces]
-
+        print_obj = [p.getString() for p in self.pieces]
+        print(" : ".join(print_obj))
+        
+        #u.fancyPrintPiece(p, (p == self.pieces[len(self.pieces)-1]))
     def followTheRules(self, table_pieces):
         if(not table_pieces):
             return True
         first_left, last_right = u.parseGameTable(table_pieces)
         # print('\n',(first_left, last_right))
         for this_p in self.pieces:
-            this_p.printPiece()
+            #this_p.printPiece()
             if((this_p.left_value == first_left) or (this_p.right_value == first_left) \
             or (this_p.left_value == last_right) or (this_p.right_value == last_right)):
                 return True

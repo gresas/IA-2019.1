@@ -20,9 +20,11 @@ class Player:
         self.hand.setHand(pieces)
 
     def setScore(self, value):
-        self.score = value
+        self.score += value
 
     def buy(self, heap):
+        if(not heap.getHeap().getGroupPieces()):
+            return ""
         p = heap.getHeap().randomChoose()
         heap.getHeap().popPiece(p)
         self.hand.getHand().appendPiece(p)
@@ -43,9 +45,8 @@ class Player:
     def printHand(self):
         self.hand.getHand().printPieces()
 
-    # Need to implement
-    def calculaPontuacao(self):
-        return True
+    def clearHand(self):
+        self.hand.getHand().clear()
 
 
 class Players:
@@ -62,6 +63,9 @@ class Players:
     def getPlayerFromIndex(self, position):
         return self.players[position]
 
+    def lenPlayers(self):
+        return len(self.players)
+
     def appendPlayer(self, player):
         self.players.append(player)
 
@@ -71,5 +75,5 @@ class Players:
     def insertPlayer(self, position, player):
         return self.players.insert(position, player)
 
-    def turnToNextPlayer(self, player):
+    def turnToNextPlayer(self):
         self.insertPlayer(len(self.players) - 1, self.popPlayer(self.players[0]))
