@@ -104,6 +104,13 @@ class Game():
                     #print(event.button)
                     self.game_play.playRoundTurn()
             
+            game_winner = self.game_play.isEnded()
+            if(game_winner):
+                text = font.render("The winner is %s"%game_winner, 1, (10, 10, 10))
+                background.blit(text, textpos)
+                input()
+                event = pygame.QUIT
+
             screen.blit(background, (0, 0))
             pygame.display.flip()
             
