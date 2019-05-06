@@ -19,7 +19,9 @@ def init_game():
 
     # Setando os nomes dos players
     players = Players()
-    for i in range(numPlayers):
+	players.append(Player("IA"))
+	players[0].IA = True
+    for i in range(1,numPlayers-1):
         name = str(input('Nome do jogador %s: '%(i+1)))
         players.appendPlayer(Player(name))
 

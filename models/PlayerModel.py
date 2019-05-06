@@ -6,6 +6,7 @@ class Player:
     def __init__(self, nickname):
         self.nick = nickname
         self.hand = gm.HandSupport()
+		self.IA = False
     
     def getName(self):
         return self.nick

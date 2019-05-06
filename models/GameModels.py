@@ -49,6 +49,30 @@ class Table:
     player_list = None
     num_pieces_per_player = 7
     game_table = None
+	
+	#MCTS
+	DEFAULT_BOARD_SIZE = 3
+    IN_PROGRESS = -1
+    DRAW = 0
+    P1 = 1
+    P2 = 2
+    totalMoves=0
+            
+        
+    #serve para checar condições de vitoria ou empate para jogo da velha PRECISA ALTERAR
+    def checaEstadoMesa(self):
+        for player in self.t.player_list.getPlayers():
+            if(not player.getPlayerHand().getHand().getGroupPieces()):
+                return True
+        if (self.geraJogadas().__len__() > 0):
+            return self.IN_PROGRESS
+        else:
+            return self.DRAW
+    
+ 
+     #função responsável para encontrar todos lugares jogaveis PRECISA ALTERAR
+    def geraJogadas(self, p):
+        return self.player_list[p].hand.getHand().possiveisJogadas(self.game_table)
 
     def buildTable(self, players):
         self.player_list = pp.Players()
@@ -76,12 +100,15 @@ class Table:
                 self.printGameTable()
             else:
                 print('Round %s\n'%round_n)
-            
-            while(not pop_piece):
-                piece_position = u.turnMenu(player)
+            if(player.IA):
+				piece_position = buscaMCTS.achaNovoMovimento(mesaClasseT, player)
                 pop_piece = player.checkPlay(self.game_table, piece_position)
-                if(pop_piece): break
-                print('\nJogada inválida, tente novamente...\n')
+			else:
+				while(not pop_piece):
+					piece_position = u.turnMenu(player)
+					pop_piece = player.checkPlay(self.game_table, piece_position)
+					if(pop_piece): break
+					print('\nJogada inválida, tente novamente...\n')
             self.insertTable(pop_piece)
         else:
             print('Não há jogadas possiveis, comprando uma peça... ',player.nick)
@@ -98,6 +125,7 @@ class Table:
         print("".join(print_obj)+'\n')
 
     def insertTable(self, piece):
+        self.totalMoves+=1
         if(not self.game_table):
             self.game_table.insert(0, (piece.left_value, piece.right_value))
         else:

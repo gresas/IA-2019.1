@@ -67,7 +67,25 @@ class GroupPieces:
     def printPieces(self):
         print_obj = [p.getString() for p in self.pieces]
         print(" : ".join(print_obj))
-        
+      
+
+    def possiveisJogadas(self, table_pieces):
+        if(not table_pieces):
+            return []
+        first_left, last_right = u.parseGameTable(table_pieces)
+		jogadas = []
+        # print('\n',(first_left, last_right))
+		count=0
+        for this_p in self.pieces:
+            #this_p.printPiece()
+            if((this_p.left_value == first_left) or (this_p.right_value == first_left):
+                jogadas.append([count,this_p, first_left])
+			if(this_p.left_value == last_right) or (this_p.right_value == last_right):
+                jogadas.append([count,this_p, last_right])
+			count+=1
+        return jogadas
+		
+		
         #u.fancyPrintPiece(p, (p == self.pieces[len(self.pieces)-1]))
     def followTheRules(self, table_pieces):
         if(not table_pieces):
