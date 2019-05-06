@@ -1,7 +1,7 @@
-from . import PieceModels as pm
-from . import PlayerModel as pp
-from .utils import util as u
-
+import PieceModels as pm
+import PlayerModel as pp
+import util as u
+import mcts
 class Heap:
 
     def __init__(self):
@@ -49,9 +49,7 @@ class Table:
     player_list = None
     num_pieces_per_player = 7
     game_table = None
-	
-	#MCTS
-	DEFAULT_BOARD_SIZE = 3
+    DEFAULT_BOARD_SIZE = 3
     IN_PROGRESS = -1
     DRAW = 0
     P1 = 1
@@ -101,14 +99,14 @@ class Table:
             else:
                 print('Round %s\n'%round_n)
             if(player.IA):
-				piece_position = buscaMCTS.achaNovoMovimento(mesaClasseT, player)
+		piece_position = mcts.buscaMCTS.achaNovoMovimento(mesaClasseT, player)
                 pop_piece = player.checkPlay(self.game_table, piece_position)
-			else:
-				while(not pop_piece):
-					piece_position = u.turnMenu(player)
-					pop_piece = player.checkPlay(self.game_table, piece_position)
-					if(pop_piece): break
-					print('\nJogada inválida, tente novamente...\n')
+	    else:
+	        while(not pop_piece):
+		    piece_position = u.turnMenu(player)
+		    pop_piece = player.checkPlay(self.game_table, piece_position)
+		    if(pop_piece): break
+		    print('\nJogada inválida, tente novamente...\n')
             self.insertTable(pop_piece)
         else:
             print('Não há jogadas possiveis, comprando uma peça... ',player.nick)

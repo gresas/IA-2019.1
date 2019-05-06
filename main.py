@@ -1,10 +1,12 @@
+# -*- coding: utf-8 -*-
 import pygame
-from models.utils.util import parseArguments
+from util import parseArguments
 from pygame.locals import *
-from models.GameModels import *
-from models.PieceModels import *
-from models.PlayerModel import *
-from models.GameConfigs import *
+from GameModels import *
+from PieceModels import *
+from PlayerModel import *
+from GameConfigs import *
+from mcts import *
 import sys
 
 def init_game():
@@ -19,11 +21,11 @@ def init_game():
 
     # Setando os nomes dos players
     players = Players()
-	players.append(Player("IA"))
-	players[0].IA = True
+    players.append(Player("IA",HandSupport()))
+    players[0].IA = True
     for i in range(1,numPlayers-1):
         name = str(input('Nome do jogador %s: '%(i+1)))
-        players.appendPlayer(Player(name))
+        players.appendPlayer(Player(name,HandSupport()))
 
     num_pieces = 7
     # Preenchendo monte com 28 pecas
@@ -116,6 +118,7 @@ class Game():
             screen.blit(background, (0, 0))
             pygame.display.flip()
             
+
 
 if __name__ == "__main__":
     game = Game()
