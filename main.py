@@ -1,5 +1,5 @@
 import pygame
-from models.utils.util import parseArguments
+from models.utils.util import parseArguments, buildGameBackground
 from pygame.locals import *
 from models.GameModels import *
 from models.PieceModels import *
@@ -66,7 +66,7 @@ def init_game():
     # --------------------------------------------------------------------------------
 
 class Game():
-    """docstring for ClassName"""
+
     def __init__(self):
         self.width = 300
         self.height = 280
@@ -79,17 +79,7 @@ class Game():
      
         screen = pygame.display.set_mode((self.width, self.height ) )
 
-        # Fill background
-        background = pygame.Surface(screen.get_size())
-        background = background.convert()
-        background.fill((250, 250, 250))
-
-        # Display some text
-        font = pygame.font.Font(None, 36)
-        text = font.render("Domino", 1, (10, 10, 10))
-        textpos = text.get_rect()
-        textpos.centerx = background.get_rect().centerx
-        background.blit(text, textpos)
+        background = buildGameBackground("Dominó", screen)
         
         # Blit everything to the screen
         screen.blit(background, (0, 0))
@@ -106,10 +96,11 @@ class Game():
             
             game_winner = self.game_play.isEnded()
             if(game_winner):
-                text = font.render("The winner is %s"%game_winner, 1, (10, 10, 10))
-                background.blit(text, textpos)
-                input()
-                event = pygame.QUIT
+                background = buildGameBackground("Winner is %s"%game_winner, screen)
+                screen.blit(background, (0, 0))
+                pygame.display.flip()
+                input("\nPressione qualquer tecla para sair...")
+                self.running = False
 
             screen.blit(background, (0, 0))
             pygame.display.flip()

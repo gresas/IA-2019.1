@@ -45,6 +45,7 @@ class HandSupport:
 
         
 class Table:
+   
     heap = None
     player_list = None
     num_pieces_per_player = 7
