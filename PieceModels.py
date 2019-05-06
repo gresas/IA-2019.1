@@ -74,17 +74,16 @@ class GroupPieces:
             return []
         first_left, last_right = u.parseGameTable(table_pieces)
 	jogadas = []
-        print('\n',(first_left, last_right))
+        #print('\n',(first_left, last_right))
 	count=-1
         for this_p in self.pieces:
-            this_p.printPiece()
+	    count+=1
             if(this_p.left_value == first_left) or (this_p.right_value == first_left):
                 jogadas.append([count,this_p, first_left])
 	    if(this_p.left_value == last_right) or (this_p.right_value == last_right):
                 jogadas.append([count,this_p, last_right])
-	count+=1
-	print(jogadas)
-	print("jogadas")
+	#print(jogadas)
+	#print("jogadas")
         return jogadas
 		
 		
