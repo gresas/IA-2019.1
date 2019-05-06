@@ -17,17 +17,19 @@ class Round:
     def play(self):
         for player in self.table.player_list.getPlayers():
             if(not self.table.turn(player, self.round_number)):
-                # Need to test this funcionality
-                print('AQUIIIII')
                 self.lock_game += 1
                 if(self.lock_game == self.table.player_list.lenPlayers()):
                     p = self.getWinnerPlayer()
                     if(p == -1):
                         self.lock_player.getHand().getGroupPieces().clear()
                     else:
-                        p.getHand().getGroupPieces().clear()
+                        p.getPlayerHand().getHand().getGroupPieces().clear()
+                else:
+                    continue
                 self.lock_player = player
-                continue
+            if(player == self.lock_player):
+                self.lock_game -= 1
+                self.lock_player = None
             if(not player.getPlayerHand().getHand().getGroupPieces()):
                 player.setScore(self.buildRoundScore(player))
                 return player
@@ -44,7 +46,7 @@ class Round:
         return self.round_score
 
     def getWinnerPlayer(self):
-        score_players = [(player.getHand().sumValue(), player) for player in self.table.player_list.getPlayers()]
+        score_players = [(player.getPlayerHand().sumValue(), player) for player in self.table.player_list.getPlayers()]
         if(u.isTieGame(score_players)):
             return -1
         return min(score_players, key=lambda x: x[0])[1]
