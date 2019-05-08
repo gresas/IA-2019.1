@@ -45,9 +45,10 @@ class HandSupport:
 
         
 class Table:
+   
     heap = None
     player_list = None
-    num_pieces_per_player = 7
+    num_pieces_per_player = 3
     game_table = None
     DEFAULT_BOARD_SIZE = 3
     IN_PROGRESS = -1
@@ -87,6 +88,7 @@ class Table:
                 pieces.appendPiece(p)
         heap.setHeap(pieces)
         for p in players.getPlayers():
+            p.setHand(HandSupport())
             for i in range(self.num_pieces_per_player):
                 p.buy(heap)
 
@@ -139,6 +141,6 @@ class Table:
         
     def clearTable(self):
         self.heap = Heap()
-        self.game_table = list()
+        self.game_table = list
         map(lambda p: p.clearHand(), self.player_list.getPlayers())
         self.initGameBuild(self.player_list, self.heap)

@@ -1,4 +1,6 @@
 from .. import PlayerModel as pm
+import pygame
+from pygame.locals import *
 
 def parseArguments(sys_ref):
     len_args = len(sys_ref.argv)
@@ -32,6 +34,20 @@ def isTieGame(tuple_list):
         if(t[0] != value):
             return False
     return True
+
+def buildGameBackground(title, screen):
+    # Fill background
+    background = pygame.Surface(screen.get_size())
+    background = background.convert()
+    background.fill((250, 250, 250))
+    # Display some text
+    font = pygame.font.Font(None, 36)
+    text = font.render(title, 1, (10, 10, 10))
+    textpos = text.get_rect()
+    textpos.centerx = background.get_rect().centerx
+    background.blit(text, textpos)
+    return background
+
 
 def parseGameTable(table_tuple):
     if(table_tuple):

@@ -17,6 +17,9 @@ class Player:
     def greaterPieceValue(self):
         return self.hand.maxValue()
 
+    def setHand(self, hand):
+        self.hand = hand
+
     def setPlayerHand(self, pieces):
         self.hand.setHand(pieces)
 

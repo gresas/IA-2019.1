@@ -25,3 +25,7 @@ Por fim, só testar se está tudo funcionando, com o comando:
 
 Para desativar o virtualenv, só rodar o comando:
 ```deactivate```
+
+Para inicar com o jogo, digite no console:
+```python main.py -p player_1 player_2 -s 15```
+    * Clique na tela do jogo para começar as rodadas/turnos, siga as instruções

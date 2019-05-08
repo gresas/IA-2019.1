@@ -12,8 +12,7 @@ História:
 	- Em uma jogada, o jogador deve conter na mão uma possível combinação válida de Peça x Peça(s) da mesa;
 		- Cada jogador, no seu turno, deve colocar uma das suas pedras em uma das 2 extremidades abertas, de forma que os pontos de um dos lados coincida com os pontos da extremidade onde está sendo colocada;
 		- Quando o jogador coloca sua pedra sobre a mesa, seu turno se acaba e passa-se ao seguinte jogador;
-	- Em cada turno, o jogador tem um tempo limite para realizar uma jogada;
-	- Se um jogador não puder jogar ou acabar o tempo limite, deverá “comprar” do monte tantas pedras como forem necessárias. Se não houver pedras no monte, passará o turno ao seguinte jogador; 	
+	- Se um jogador não puder jogar, deverá “comprar” do monte tantas pedras como forem necessárias. Se não houver pedras no monte, passará o turno ao seguinte jogador; 	
 	- Existem casos onde nenhum dos jogadores pode continuar a partida. Isto ocorre quando o número das extremidades saiu 7 vezes antes. Nesse momento se diz que a partida está fechada;
 		- Os jogadores contarão os pontos das pedras que ficaram; o jogador ou dupla com menos pontos vencem e somam-se os pontos da maneira habitual;
 	- Pode acontecer de você ter os mesmos pontos que o jogador ou a dupla que tem a vantagem, nesse caso, ganha este jogador;
