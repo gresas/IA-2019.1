@@ -101,4 +101,4 @@ class GroupPieces:
         return False
 
     def clear(self):
-        self.pieces.clear()
+        self.pieces = list()

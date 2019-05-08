@@ -1,5 +1,7 @@
+# -*- coding: utf-8 -*-
 from GameModels import *
 import PlayerModel as pm
+import pygame
 
 def parseArguments(sys_ref):
     len_args = len(sys_ref.argv)
@@ -22,11 +24,25 @@ def parseArguments(sys_ref):
     return (player_list, score)
 
 def turnMenu(player):
+    print("=======================================================")
     print('Player of the turn: %s'%player.nick)
     print('Here is your hand: \n')
     player.printHand()
     opt = int(input("\nEntre com a posicao da peca a ser jogada:\n"))
     return opt
+
+def buildGameBackground(title, screen):
+    # Fill background
+    background = pygame.Surface(screen.get_size())
+    background = background.convert()
+    background.fill((250, 250, 250))
+    # Display some text
+    font = pygame.font.Font(None, 36)
+    text = font.render(title, 1, (10, 10, 10))
+    textpos = text.get_rect()
+    textpos.centerx = background.get_rect().centerx
+    background.blit(text, textpos)
+    return background
 
 def isTieGame(tuple_list):
     value = tuple_list[0]

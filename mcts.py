@@ -3,8 +3,10 @@ import random,math
 from copy import deepcopy
 import PieceModels as pm
 from PlayerModel import *
+from PieceModels import *
 from GameModels import *
 import util as u
+import time
 
         
 class Table():
@@ -23,6 +25,7 @@ class Table():
     
     def __init__(self):
         self.player_list = Players()
+	self.pecasJgIA = -1
         
     #serve para checar condições de vitoria ou empate para jogo da velha PRECISA ALTERAR
     def checaEstadoMesa(self):
@@ -61,12 +64,19 @@ class Table():
         if(player.isValidHand(self.game_table)):
             pop_piece = None
             if(self.game_table):
+    		print("=======================================================")
                 print("Game Table:")
                 self.printGameTable()
             else:
                 print('Round %s\n'%round_n)
             if(player.IA):
+	    	print('Player of the turn (IA): %s'%player.nick)
+	    	print('Here is your hand: \n')
+	    	player.printHand()
+		start = time.time()
 		piece_position = buscaMCTS.achaNovoMovimento(buscaMCTS(),self, player.posT+2)
+		end = time.time()
+		print("Tempo de execução de IA (8 Verificações): "+str(end - start))
 		#print(piece_position)
 		#player.printHand()
                 pop_piece = player.checkPlay(self.game_table, piece_position)
@@ -79,6 +89,7 @@ class Table():
 		    if(pop_piece): break
 		    print('\nJogada inválida, tente novamente...\n')
             self.insertTable(pop_piece)
+    	    print("=======================================================")
 	    #print("Aqui?")
         else:
             print('Não há jogadas possiveis, comprando uma peça... ',player.nick)
@@ -322,7 +333,6 @@ class buscaMCTS():
 		estadoDaMesa = estadoTemp.mesa.checaEstadoMesa()
 		if(estadoDaMesa==3-ramoTemp.estado.numJogador and ramoTemp.ramoPai!=None):
 			ramoTemp.ramoPai.estado.pontuacaoVitoria=-999999999
-		print("Começo simula:")
 		oponente = 3-estadoTemp.numJogador
 		empate=0
 		while(estadoDaMesa == Table.IN_PROGRESS):
@@ -342,6 +352,8 @@ class buscaMCTS():
 			    #print("escolhas 2: " + str(escolhas))
 			if(escolhas!= []):
                       	    #print("escolhas 3: " + str(escolhas))
+			    if(estadoTemp.numJogador-1==0):
+				estadoTemp.mesa.pecasJgIA-=1
 			    escolha = random.choice(escolhas)
 			    estadoTemp.mesa.player_list.getPlayers()[estadoTemp.numJogador-1].hand.getHand().popIndexPiece(escolha[0])
 			    #print("///////")
@@ -352,6 +364,8 @@ class buscaMCTS():
 			    #estadoTemp.mesa.printGameTable()
 			    #print("///////")
 		            if(escolhas!=[]):estadoTemp.mesa.insertTable(escolha[1])
+			if(estadoTemp.mesa.pecasJgIA==0 and estadoTemp.numJogador-1==0):
+				return estadoTemp.numJogador
 			estadoDaMesa = estadoTemp.mesa.checaEstadoMesa()
 			estadoTemp.numJogador = 3 - estadoTemp.numJogador
 		return 3-estadoTemp.numJogador
@@ -364,10 +378,20 @@ class buscaMCTS():
 		tree= None
 		tree = arvore()
 		ramoRaiz = tree.raiz
-		ramoRaiz.estado.mesa = mesa
+		ramoRaiz.estado.mesa = deepcopy(mesa)
 		ramoRaiz.estado.numJogador = oponente
+		#mao do oponente são todas as peças
+		pieces = GroupPieces()
+		num_pieces=7
+		#for k in range(4):
+		for i in range(num_pieces):
+		    for j in range(i, num_pieces):
+		         p = Piece(i, j)
+		         pieces.appendPiece(p)
+		ramoRaiz.estado.mesa.player_list.players[0].setPlayerHand(pieces)
+	        ramoRaiz.estado.mesa.pecasJgIA=7
 		#importante, aumentar esse valor deixa a ia mais inteligente, vai deixar ela fazer mais verificações na árvore
-		for i in range(0,4):
+		for i in range(0,8):
 			ramoPromisor = buscaMCTS.selecionaRamoPromisor(buscaMCTS(),ramoRaiz)
 			if(ramoPromisor.estado.mesa.checaEstadoMesa()==Table.IN_PROGRESS):
 			    buscaMCTS.expandirRamo(buscaMCTS(),ramoPromisor)
@@ -377,11 +401,11 @@ class buscaMCTS():
 			resultadoJogo = buscaMCTS.simularResultadoJogo(buscaMCTS(),ramoExplorar)
 			buscaMCTS.propagarInterno(buscaMCTS(),ramoExplorar,resultadoJogo)
 		vencedor = ramoRaiz.filhoComMaiorPontuacao()
-		print("Inicio da árvore")
+		print("==================Inicio da árvore====================")
 		buscaMCTS.printaArvore(buscaMCTS(),"",tree.raiz)
-		print("Fim da árvore")
+		print("==================Fim da árvore=======================")
 		tree.raiz = vencedor
-		print("Vencedor: NumJ="+str(vencedor.estado.numJogador)+" Visitas="+str(vencedor.estado.visitas)+" Pontuacao="+str(vencedor.estado.pontuacaoVitoria))
+		print("Vencedor da árvore: NumJ="+str(vencedor.estado.numJogador)+" Visitas="+str(vencedor.estado.visitas)+" Pontuacao="+str(vencedor.estado.pontuacaoVitoria))
 		return vencedor.estado.posicaoPeca
 
 
