@@ -18,7 +18,7 @@ def parseArguments(sys_ref):
                 if(sys_ref.argv[j][0] == '-'):
                     break
                 player_list.append(pm.Player(sys_ref.argv[j],HandSupport()))
-	    player_list[1].IA = True
+        player_list[1].IA = True
         if(sys_ref.argv[i] == '-s'):
             score = sys_ref.argv[i + 1]
     return (player_list, score)

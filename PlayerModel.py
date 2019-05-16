@@ -7,9 +7,9 @@ class Player:
     def __init__(self, nickname, gmHand):
         self.nick = nickname
         self.hand = gmHand
-	self.IA = False
-	self.posT = self.pos
-	self.pos+=1
+        self.IA = False
+        self.posT = self.pos
+        self.pos+=1
     
     def getName(self):
         return self.nick
