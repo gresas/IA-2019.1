@@ -14,7 +14,7 @@ class Table():
     player_list = None
     num_pieces_per_player = 7
     game_table = None
-	
+    
     #MCTS
     DEFAULT_BOARD_SIZE = 3
     IN_PROGRESS = -1
@@ -25,12 +25,12 @@ class Table():
     
     def __init__(self):
         self.player_list = Players()
-	self.pecasJgIA = -1
+        self.pecasJgIA = -1
         
     #serve para checar condições de vitoria ou empate para jogo da velha PRECISA ALTERAR
-    def checaEstadoMesa(self):
+    def checaEstadoMesa(self):  
         for player in self.player_list.getPlayers():
-	    #print(player.hand.getHand().lenGroupPieces())
+        #print(player.hand.getHand().lenGroupPieces())
             if(not player.hand.getHand().lenGroupPieces()>0):
                 return True
         return self.IN_PROGRESS
@@ -38,9 +38,9 @@ class Table():
  
      #função responsável para encontrar todos lugares jogaveis PRECISA ALTERAR
     def geraJogadas(self, p):
-	if(p<self.player_list.getPlayers().__len__()):
-        	return self.player_list.getPlayerFromIndex(p).hand.getHand().possiveisJogadas(self.game_table)
-	return []
+        if(p<self.player_list.getPlayers().__len__()):
+            return self.player_list.getPlayerFromIndex(p).hand.getHand().possiveisJogadas(self.game_table)
+        return []
 
     def buildTable(self, players):
         self.player_list = Players()
@@ -64,33 +64,33 @@ class Table():
         if(player.isValidHand(self.game_table)):
             pop_piece = None
             if(self.game_table):
-    		print("=======================================================")
+                print("=======================================================")
                 print("Game Table:")
                 self.printGameTable()
             else:
                 print('Round %s\n'%round_n)
             if(player.IA):
-	    	print('Player of the turn (IA): %s'%player.nick)
-	    	print('Here is your hand: \n')
-	    	player.printHand()
-		start = time.time()
-		piece_position = buscaMCTS.achaNovoMovimento(buscaMCTS(),self, player.posT+2)
-		end = time.time()
-		print("Tempo de execução de IA (8 Verificações): "+str(end - start))
-		#print(piece_position)
-		#player.printHand()
+                print('Player of the turn (IA): %s'%player.nick)
+                print('Here is your hand: \n')
+                player.printHand()
+                start = time.time()
+                piece_position = buscaMCTS.achaNovoMovimento(buscaMCTS(),self, player.posT+2)
+                end = time.time()
+                print("Tempo de execução de IA (8 Verificações): "+str(end - start))
+                #print(piece_position)
+                #player.printHand()
                 pop_piece = player.checkPlay(self.game_table, piece_position)
-		#player.printHand()
-		#self.printGameTable()
-	    else:
-	        while(not pop_piece):
-	            piece_position = u.turnMenu(player)
-		    pop_piece = player.checkPlay(self.game_table, piece_position)
-		    if(pop_piece): break
-		    print('\nJogada inválida, tente novamente...\n')
+                #player.printHand()
+                #self.printGameTable()
+            else:
+                while(not pop_piece):
+                    piece_position = u.turnMenu(player)    
+                    pop_piece = player.checkPlay(self.game_table, piece_position)
+                    if(pop_piece): break
+                    print('\nJogada inválida, tente novamente...\n')
             self.insertTable(pop_piece)
-    	    print("=======================================================")
-	    #print("Aqui?")
+            print("=======================================================")
+        #print("Aqui?")
         else:
             print('Não há jogadas possiveis, comprando uma peça... ',player.nick)
             p_buy = player.buy(self.heap)
@@ -100,7 +100,7 @@ class Table():
             print('Peça adquirida: |%s|%s|\n\n'%p_buy)
             self.turn(player, round_n)
 
-	#print("Aqui?")
+    #print("Aqui?")
         return True
 
     def printGameTable(self):
@@ -139,7 +139,7 @@ class mesa():
     totalMoves=0
     #init serve para instancia o mesaClasseValues para cada objeto ao inves de um global
     def __init__(self):
-            self.mesaClasseValues = [[0,0,0],[0,0,0],[0,0,0]]
+        self.mesaClasseValues = [[0,0,0],[0,0,0],[0,0,0]]
             
     #funcao serve para realizar movimento adicionando o valor do jogando no tabuleiro PRECISA ALTERAR
     def realizaMovimento(self,player, p):
@@ -217,196 +217,188 @@ class estado():
         pontuacaoVitoria = 0
         #init serve para instancia o mesaClasseValues para cada objeto ao inves de um global
         def __init__(self):
-                self.mesa = Table()
-                self.numJogador = -1
-                self.visitas=0
-                self.pontuacaoVitoria = 0
-		self.posicaoPeca = -1
+            self.mesa = Table()
+            self.numJogador = -1
+            self.visitas=0
+            self.pontuacaoVitoria = 0
+            self.posicaoPeca = -1
         #gera todos os resultado de estado da mesa possiveis com base nos lugares que pode jogar, UTILIZAR PARA DEFINIR JOGADAS COM BASE NA MÃO DE CADA JOGADOR
         def geraEstadosPossiveis(self):
-                possibleStates = []
-                availablePositions = self.mesa.geraJogadas(3-self.numJogador-1)
-		#print("NumJ"+str(self.numJogador))
-                for p in availablePositions:
-                        newState = estado()
-                        newState.mesa = deepcopy(self.mesa)
-                        newState.numJogador = 3 - self.numJogador
-                        newState.mesa.insertTable(p[1])
-			newState.posicaoPeca = p[0]
-		#	print(p[0])
-		#	print("AQUI")
-			if(p[0]<self.mesa.player_list.players[self.numJogador-1].hand.len()):self.mesa.player_list.players[self.numJogador-1].checkPlay(self.mesa.game_table, p[0])
-                        possibleStates.append(newState)
-             
-                return possibleStates;
+            possibleStates = []
+            availablePositions = self.mesa.geraJogadas(3-self.numJogador-1)
+        #print("NumJ"+str(self.numJogador))
+            for p in availablePositions:
+                newState = estado()
+                newState.mesa = deepcopy(self.mesa)
+                newState.numJogador = 3 - self.numJogador
+                newState.mesa.insertTable(p[1])
+                newState.posicaoPeca = p[0]
+        #    print(p[0])
+        #    print("AQUI")
+                if(p[0]<self.mesa.player_list.players[self.numJogador-1].hand.len()):self.mesa.player_list.players[self.numJogador-1].checkPlay(self.mesa.game_table, p[0])
+                possibleStates.append(newState)
+            return possibleStates;
 
 
 class ramos():
-	estado = estado()
-	ramoPai = None
-	ramosFilhos = []
+    estado = estado()
+    ramoPai = None
+    ramosFilhos = []
 
         #init serve para instancia o mesaClasseValues para cada objeto ao inves de um global
-	def __init__(self):
-		self.estado = estado()
-		self.ramoPai = None
-		self.ramosFilhos = []
+    def __init__(self):
+        self.estado = estado()
+        self.ramoPai = None
+        self.ramosFilhos = []
 
-	#função geral que verifica qual filho tem a melhor pontuação e é o ganhador
-	def filhoComMaiorPontuacao(ramo):
-		maximo = -999999999
-		ramoRetorno = ramo.ramosFilhos[0]
-		visitasParente = ramo.estado.visitas
-		for r in ramo.ramosFilhos:
-			if(r.estado.visitas>=ramoRetorno.estado.visitas):
-				ramoRetorno = r
-			#print(r.estado.visitas)
-		return ramoRetorno
+    #função geral que verifica qual filho tem a melhor pontuação e é o ganhador
+    def filhoComMaiorPontuacao(ramo):
+        maximo = -999999999
+        ramoRetorno = ramo.ramosFilhos[0]
+        visitasParente = ramo.estado.visitas
+        for r in ramo.ramosFilhos:
+            if(r.estado.visitas>=ramoRetorno.estado.visitas):
+                ramoRetorno = r
+            #print(r.estado.visitas)
+        return ramoRetorno
 
 class arvore():
-	raiz = ramos()
+    raiz = ramos()
 
-	def __init__(self):
-		self.raiz = ramos()
+    def __init__(self):
+        self.raiz = ramos()
 
 class UCT():
         #com base no estado do ramo, gera a pontuação uct, que é usado para selecionar qual ramo será o melhor
-	def uctValue(self,visitasTotais,PontVitoriaRamo, visitaRamo):
-		if(visitaRamo == 0 or visitasTotais==0):
-			return 999999999
-		return (PontVitoriaRamo/visitaRamo)+ 1.41*((math.log(visitasTotais)/visitaRamo)**(1/2))
-	    
-	#verifica os uct de cada ramo para selecionar o melhor	
-	def achaMelhorRamo(self,ramo):
-		maximo = -999999999
-		ramoRetorno = None
-		visitasParente = ramo.estado.visitas
-		for r in ramo.ramosFilhos:
-			if(maximo<UCT.uctValue(UCT(),visitasParente, r.estado.pontuacaoVitoria, r.estado.visitas)):
-				maximo = UCT.uctValue(UCT(),visitasParente, r.estado.pontuacaoVitoria, r.estado.visitas)
-				ramoRetorno = r
-		return ramoRetorno
+    def uctValue(self,visitasTotais,PontVitoriaRamo, visitaRamo):
+        if(visitaRamo == 0 or visitasTotais==0):
+            return 999999999
+        return (PontVitoriaRamo/visitaRamo)+ 1.41*((math.log(visitasTotais)/visitaRamo)**(1/2))
+        
+    #verifica os uct de cada ramo para selecionar o melhor    
+    def achaMelhorRamo(self,ramo):
+        maximo = -999999999
+        ramoRetorno = None
+        visitasParente = ramo.estado.visitas
+        for r in ramo.ramosFilhos:
+            if(maximo<UCT.uctValue(UCT(),visitasParente, r.estado.pontuacaoVitoria, r.estado.visitas)):
+                maximo = UCT.uctValue(UCT(),visitasParente, r.estado.pontuacaoVitoria, r.estado.visitas)
+                ramoRetorno = r
+        return ramoRetorno
 
 
 class buscaMCTS():
-	PONTUACAO_VITORIA = 10
-	level = 0
-	oponente = None
-	def __init__(self):
-		self.oponente = None
+    PONTUACAO_VITORIA = 10
+    level = 0
+    oponente = None
+    def __init__(self):
+        self.oponente = None
 
-	#printa a arvore, comentando só pra deixar estético
-	def printaArvore(self,textoInit,ramo):
-		print(textoInit+"NumJ="+str(ramo.estado.numJogador)+" Visitas="+str(ramo.estado.visitas)+" Pontuacao="+str(ramo.estado.pontuacaoVitoria)+" EspacoMao:"+str(ramo.estado.posicaoPeca))
-		for p in ramo.ramosFilhos:
-		    buscaMCTS.printaArvore(buscaMCTS(),textoInit+"    ",p)
-		return None
-	#seleciona o melhor filho por UCT, verificado cada um
-	def selecionaRamoPromisor(self,ramo):
-		nodoRetorno = ramo
-		while(nodoRetorno.ramosFilhos.__len__()>0):
-			nodoRetorno = UCT.achaMelhorRamo(UCT(),nodoRetorno)
-		return nodoRetorno
-	#basicamente verifica todos os estados que podem ser gerado e a partir disso, gera os filhos do ramo
-	def expandirRamo(self,ramo):
-		estadosPossiveis = ramo.estado.geraEstadosPossiveis()
-		for e in estadosPossiveis:
-			novoRamo = ramos()
-			novoRamo.estado = e
-			novoRamo.ramoPai = ramo
-			novoRamo.estado.numJogador=3-ramo.estado.numJogador
-			ramo.ramosFilhos.append(novoRamo)
-	#basicamente vai indo de pai a pai ajustando os pontos de vitoria e visita
-	def propagarInterno(self,ramoExplorar, numJogador):
-		ramoTemp = ramoExplorar
-		while(ramoTemp!=None):
-			ramoTemp.estado.visitas+=1
-			#print("nums jg"+str(ramoTemp.estado.numJogador)+"/"+str(numJogador))
-			if(ramoTemp.estado.numJogador == numJogador):
-				ramoTemp.estado.pontuacaoVitoria+=1
-			ramoTemp = ramoTemp.ramoPai
+    #printa a arvore, comentando só pra deixar estético
+    def printaArvore(self,textoInit,ramo):
+        print(textoInit+"NumJ="+str(ramo.estado.numJogador)+" Visitas="+str(ramo.estado.visitas)+" Pontuacao="+str(ramo.estado.pontuacaoVitoria)+" EspacoMao:"+str(ramo.estado.posicaoPeca))
+        for p in ramo.ramosFilhos:
+            buscaMCTS.printaArvore(buscaMCTS(),textoInit+"    ",p)
+        return None
+    #seleciona o melhor filho por UCT, verificado cada um
+    def selecionaRamoPromisor(self,ramo):
+        nodoRetorno = ramo
+        while(nodoRetorno.ramosFilhos.__len__()>0):
+            nodoRetorno = UCT.achaMelhorRamo(UCT(),nodoRetorno)
+        return nodoRetorno
+    #basicamente verifica todos os estados que podem ser gerado e a partir disso, gera os filhos do ramo
+    def expandirRamo(self,ramo):
+        estadosPossiveis = ramo.estado.geraEstadosPossiveis()
+        for e in estadosPossiveis:
+            novoRamo = ramos()
+            novoRamo.estado = e
+            novoRamo.ramoPai = ramo
+            novoRamo.estado.numJogador=3-ramo.estado.numJogador
+            ramo.ramosFilhos.append(novoRamo)
+    #basicamente vai indo de pai a pai ajustando os pontos de vitoria e visita
+    def propagarInterno(self,ramoExplorar, numJogador):
+        ramoTemp = ramoExplorar
+        while(ramoTemp!=None):
+            ramoTemp.estado.visitas+=1
+            #print("nums jg"+str(ramoTemp.estado.numJogador)+"/"+str(numJogador))
+            if(ramoTemp.estado.numJogador == numJogador):
+                ramoTemp.estado.pontuacaoVitoria+=1
+            ramoTemp = ramoTemp.ramoPai
 
-	#simula um resultado aleatoria de jogo, checando o status e vendo se alguem venceu, se não, repete uma jogada totalmente aleatoria a partir da mesa atual
-	def simularResultadoJogo(self,ramo):
-		ramoTemp = deepcopy(ramo)
-		estadoTemp = deepcopy(ramoTemp.estado)
-		estadoDaMesa = estadoTemp.mesa.checaEstadoMesa()
-		if(estadoDaMesa==3-ramoTemp.estado.numJogador and ramoTemp.ramoPai!=None):
-			ramoTemp.ramoPai.estado.pontuacaoVitoria=-999999999
-		oponente = 3-estadoTemp.numJogador
-		empate=0
-		while(estadoDaMesa == Table.IN_PROGRESS):
-			#print("Jogador: " + str(estadoTemp.numJogador))
-			escolhas = estadoTemp.mesa.geraJogadas(estadoTemp.numJogador-1)
-			#print("escolhas: " + str(escolhas))
-			while(escolhas == []):
-			    p_buy = estadoTemp.mesa.player_list.getPlayers()[estadoTemp.numJogador-1].buy(estadoTemp.mesa.heap)
-		            if(not p_buy):
-				empate+=1
-				if(empate==2):
-					return 3-oponente
-				break
-			    else:
-				empate=0
-			    escolhas = estadoTemp.mesa.geraJogadas(estadoTemp.numJogador-1)
-			    #print("escolhas 2: " + str(escolhas))
-			if(escolhas!= []):
-                      	    #print("escolhas 3: " + str(escolhas))
-			    if(estadoTemp.numJogador-1==0):
-				estadoTemp.mesa.pecasJgIA-=1
-			    escolha = random.choice(escolhas)
-			    estadoTemp.mesa.player_list.getPlayers()[estadoTemp.numJogador-1].hand.getHand().popIndexPiece(escolha[0])
-			    #print("///////")
-			    #print("Jogador "+str(estadoTemp.numJogador))
-			    #print("-----------")
-			    #estadoTemp.mesa.player_list.getPlayers()[estadoTemp.numJogador-1].printHand()
-			    #print("-----------")
-			    #estadoTemp.mesa.printGameTable()
-			    #print("///////")
-		            if(escolhas!=[]):estadoTemp.mesa.insertTable(escolha[1])
-			if(estadoTemp.mesa.pecasJgIA==0 and estadoTemp.numJogador-1==0):
-				return estadoTemp.numJogador
-			estadoDaMesa = estadoTemp.mesa.checaEstadoMesa()
-			estadoTemp.numJogador = 3 - estadoTemp.numJogador
-		return 3-estadoTemp.numJogador
-		
-	#função principal da ia, serve para buscar o próximo movimento dependendo do jogador e estado da mesa, ele seleciona qual filho é melhor por UCT, cria os filhos desse ramo
-	#escolhe um filho aleatorio(rodada aleatoria) do ramo e simula o jogo a partir desse filho depois ajusta os valores de todos os pais
-	#depois, por causa da propagação, verifica o filho da raiz com melhor pontuação
-	def achaNovoMovimento(self,mesa, numJogador):
-		oponente = 3-numJogador
-		tree= None
-		tree = arvore()
-		ramoRaiz = tree.raiz
-		ramoRaiz.estado.mesa = deepcopy(mesa)
-		ramoRaiz.estado.numJogador = oponente
-		#mao do oponente são todas as peças
-		pieces = GroupPieces()
-		num_pieces=7
-		#for k in range(4):
-		for i in range(num_pieces):
-		    for j in range(i, num_pieces):
-		         p = Piece(i, j)
-		         pieces.appendPiece(p)
-		ramoRaiz.estado.mesa.player_list.players[0].setPlayerHand(pieces)
-	        ramoRaiz.estado.mesa.pecasJgIA=7
-		#importante, aumentar esse valor deixa a ia mais inteligente, vai deixar ela fazer mais verificações na árvore
-		for i in range(0,8):
-			ramoPromisor = buscaMCTS.selecionaRamoPromisor(buscaMCTS(),ramoRaiz)
-			if(ramoPromisor.estado.mesa.checaEstadoMesa()==Table.IN_PROGRESS):
-			    buscaMCTS.expandirRamo(buscaMCTS(),ramoPromisor)
-			ramoExplorar = ramoPromisor
-			if(ramoPromisor.ramosFilhos.__len__()>0):
-				ramoExplorar=random.choice(ramoPromisor.ramosFilhos)
-			resultadoJogo = buscaMCTS.simularResultadoJogo(buscaMCTS(),ramoExplorar)
-			buscaMCTS.propagarInterno(buscaMCTS(),ramoExplorar,resultadoJogo)
-		vencedor = ramoRaiz.filhoComMaiorPontuacao()
-		print("==================Inicio da árvore====================")
-		buscaMCTS.printaArvore(buscaMCTS(),"",tree.raiz)
-		print("==================Fim da árvore=======================")
-		tree.raiz = vencedor
-		print("Vencedor da árvore: NumJ="+str(vencedor.estado.numJogador)+" Visitas="+str(vencedor.estado.visitas)+" Pontuacao="+str(vencedor.estado.pontuacaoVitoria))
-		return vencedor.estado.posicaoPeca
+    #simula um resultado aleatoria de jogo, checando o status e vendo se alguem venceu, se não, repete uma jogada totalmente aleatoria a partir da mesa atual
+    def simularResultadoJogo(self,ramo):
+        ramoTemp = deepcopy(ramo)
+        estadoTemp = deepcopy(ramoTemp.estado)
+        estadoDaMesa = estadoTemp.mesa.checaEstadoMesa()
+        if(estadoDaMesa==3-ramoTemp.estado.numJogador and ramoTemp.ramoPai!=None):
+            ramoTemp.ramoPai.estado.pontuacaoVitoria=-999999999
+        oponente = 3-estadoTemp.numJogador
+        empate=0
+        while(estadoDaMesa == Table.IN_PROGRESS):
+            #print("Jogador: " + str(estadoTemp.numJogador))
+            escolhas = estadoTemp.mesa.geraJogadas(estadoTemp.numJogador-1)
+            #print("escolhas: " + str(escolhas))
+            while(escolhas == []):
+                p_buy = estadoTemp.mesa.player_list.getPlayers()[estadoTemp.numJogador-1].buy(estadoTemp.mesa.heap)
+                if(not p_buy):
+                    empate+=1
+                    if(empate==2):
+                        return 3-oponente
+                        break
+                else:
+                    empate=0
+                escolhas = estadoTemp.mesa.geraJogadas(estadoTemp.numJogador-1)
+                #print("escolhas 2: " + str(escolhas))
+            if(escolhas!= []):
+                              #print("escolhas 3: " + str(escolhas))
+                if(estadoTemp.numJogador-1==0):
+                    estadoTemp.mesa.pecasJgIA-=1
+                escolha = random.choice(escolhas)
+                estadoTemp.mesa.player_list.getPlayers()[estadoTemp.numJogador-1].hand.getHand().popIndexPiece(escolha[0])
+                if(escolhas!=[]):estadoTemp.mesa.insertTable(escolha[1])
+                if(estadoTemp.mesa.pecasJgIA==0 and estadoTemp.numJogador-1==0):
+                    return estadoTemp.numJogador
+            estadoDaMesa = estadoTemp.mesa.checaEstadoMesa()
+            estadoTemp.numJogador = 3 - estadoTemp.numJogador
+        return 3-estadoTemp.numJogador
+        
+    #função principal da ia, serve para buscar o próximo movimento dependendo do jogador e estado da mesa, ele seleciona qual filho é melhor por UCT, cria os filhos desse ramo
+    #escolhe um filho aleatorio(rodada aleatoria) do ramo e simula o jogo a partir desse filho depois ajusta os valores de todos os pais
+    #depois, por causa da propagação, verifica o filho da raiz com melhor pontuação
+    def achaNovoMovimento(self,mesa, numJogador):
+        oponente = 3-numJogador
+        tree= None
+        tree = arvore()
+        ramoRaiz = tree.raiz
+        ramoRaiz.estado.mesa = deepcopy(mesa)
+        ramoRaiz.estado.numJogador = oponente
+        #mao do oponente são todas as peças
+        pieces = GroupPieces()
+        num_pieces=7
+        #for k in range(4):
+        for i in range(num_pieces):
+            for j in range(i, num_pieces):
+                 p = Piece(i, j)
+                 pieces.appendPiece(p)
+            ramoRaiz.estado.mesa.player_list.players[0].setPlayerHand(pieces)
+            ramoRaiz.estado.mesa.pecasJgIA=7
+        #importante, aumentar esse valor deixa a ia mais inteligente, vai deixar ela fazer mais verificações na árvore
+        for i in range(0,8):
+            ramoPromisor = buscaMCTS.selecionaRamoPromisor(buscaMCTS(),ramoRaiz)
+            if(ramoPromisor.estado.mesa.checaEstadoMesa()==Table.IN_PROGRESS):
+                buscaMCTS.expandirRamo(buscaMCTS(),ramoPromisor)
+            ramoExplorar = ramoPromisor
+            if(ramoPromisor.ramosFilhos.__len__()>0):
+                ramoExplorar=random.choice(ramoPromisor.ramosFilhos)
+            resultadoJogo = buscaMCTS.simularResultadoJogo(buscaMCTS(),ramoExplorar)
+            buscaMCTS.propagarInterno(buscaMCTS(),ramoExplorar,resultadoJogo)
+            vencedor = ramoRaiz.filhoComMaiorPontuacao()
+        print("==================Inicio da árvore====================")
+        buscaMCTS.printaArvore(buscaMCTS(),"",tree.raiz)
+        print("==================Fim da árvore=======================")
+        tree.raiz = vencedor
+        print("Vencedor da árvore: NumJ="+str(vencedor.estado.numJogador)+" Visitas="+str(vencedor.estado.visitas)+" Pontuacao="+str(vencedor.estado.pontuacaoVitoria))
+        return vencedor.estado.posicaoPeca
 
 
 #tem que mudar um pouco tbm, mas função principal que vai jogando
@@ -415,11 +407,11 @@ def simulaJogoIA_utilizaMesaVazia(b):
         player = mesaClasseT.P1;
         totalMoves = mesaClasseT.DEFAULT_BOARD_SIZE * mesaClasseT.DEFAULT_BOARD_SIZE;
         for i in range(0, totalMoves):
-                mesaClasseT = buscaMCTS.achaNovoMovimento(buscaMCTS(),mesaClasseT, player)
-                if (mesaClasseT.checaEstadoMesa() != -1):
-                        break 
-                player = 3 - player;
-    
+            mesaClasseT = buscaMCTS.achaNovoMovimento(buscaMCTS(),mesaClasseT, player)
+            if (mesaClasseT.checaEstadoMesa() != -1):
+                    break 
+            player = 3 - player;
+
         winStatus = mesaClasseT.checaEstadoMesa();
         print("Vitoria de:"+str(winStatus))
         print(mesaClasseT.mesaClasseValues[0])
